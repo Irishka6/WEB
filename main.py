@@ -46,8 +46,8 @@ def promotion():
                     <h1>Присоединяйся!</h1>
                   </body>
                 </html>"""
-@app.route('/results/<nickname>/<int:level>/<float:rating>')
-def image(nickname, level, rating):
+@app.route('/choice/<planet_name>')
+def image(planet_name):
     return f'''<!doctype html>
                 <html lang="en">
                   <head>
@@ -57,22 +57,23 @@ def image(nickname, level, rating):
                     integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" 
                     crossorigin="anonymous">
                     <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}" />
-                    <title>Результат</title>
+                    <title>Привет, Марс!</title>
                   </head>
                   <body>
-                    <h1>Результаты отбора</h1>
-                  </body>
-                  <body>
-                    <h2>Претендента на участие в мисси {nickname}:</h2>
+                    <h1>Мое предложение: {planet_name}</h1>
+                    <h2>Эта планета близка к Земле</h2>
                   </body>
                     <div class="alert alert-success" role="alert">
-                      Поздравляем! Ваш рейтинг после {level} этапа отбора
+                      На ней много необходимых ресурсов
                     </div>
-                    <body>
-                      <h3>составляет {rating}!</h3>
-                    </body>
+                    <div class="alert alert-secondary" role="alert">
+                      На ней есть вода и атмосфера
+                    </div>
                     <div class="alert alert-warning" role="alert">
-                      Желаем удачи!
+                      на ней есть небольшое могнитное поле
+                    </div>
+                    <div class="alert alert-danger" role="alert">
+                      Наконец, она очень красива!
                     </div>
                 </html>'''
 if __name__ == '__main__':
