@@ -6,7 +6,7 @@
 <h2>Acshion # {{item.id}}</h2>
 <table class="table">
   <thead>
-    <tr>
+    <tr class="table-secondary">
       <th scope="col">Название работы</th>
       <th scope="col">фамилия и имя ответственного</th>
       <th scope="col">продолжительность в часах</th>
@@ -15,12 +15,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th scope="row">{{item.job}}</th>
-      <td>{{item.user.name}} {{item.user.surname}}</td>
-      <td>{{item.work_size}}</td>
-      <td>{{item.collaborators}}</td>
-        <td>{{item.is_finished}}</td>
+    <tr >
+      <th scope="row" class="table-info">{{item.job}}</th>
+      <td class="table-info">{{item.user.name}} {{item.user.surname}}</td>
+      <td class="table-info">{{item.work_size}}</td>
+      <td class="table-info">{{item.collaborators}}</td>
+        <td class="table-danger">{{item.is_finished}}</td>
     </tr>
   </tbody>
 </table>
