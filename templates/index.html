@@ -1,28 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends "base.html" %}
 
-        <title>{{ title }}</title>
-    </head>
-    <body>
-        <h1>Миссия Колонизация Марса</h1>
-        <h4>И на Марсе будут яблони цвести!</h4>
-    {% set user_list = ['инженер-исследователь', 'пилот', 'строитель', 'экзобиолог', 'врач', 'инженер по терраформированию', 'климатолог', 'специалист по радиационной защите', 'астрогеолог', 'гляциолог', 'инженер жизнеобеспечения', 'метеоролог', 'оператор марсохода', 'киберинженер', 'штурман', 'пилот дронов'] %}
-        {% if title == 'ul' %}
-            <ul>
-                {% for user in user_list %}
-                    <li>{{{ user }}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            {% for user in user_list %}
-                <ul>
-                    <h5>{{ loop.index }} {{ user }}
-                    </h5>
-                </ul>
-            {% endfor %}
-
-    </body>
-</html>
+{% block content %}
+<h1>Записи в блоге</h1>
+{% for item in news%}
+<h2>Acshion # {{item.id}}</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Название работы</th>
+      <th scope="col">фамилия и имя ответственного</th>
+      <th scope="col">продолжительность в часах</th>
+      <th scope="col">список id команды</th>
+        <th scope="col">завершена или нет</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">{{item.job}}</th>
+      <td>{{item.user.name}} {{item.user.surname}}</td>
+      <td>{{item.work_size}}</td>
+      <td>{{item.collaborators}}</td>
+        <td>{{item.is_finished}}</td>
+    </tr>
+  </tbody>
+</table>
+{% endfor %}
+{% endblock %}
