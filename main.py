@@ -71,5 +71,9 @@ def login():
     if form.validate_on_submit():
         return redirect('/success')
     return render_template('login.html', title='Авторизация', form=form)
+
+@app.route('/distribution')
+def distribution():
+    return render_template('cauta.html', user_list=['Ридли Скотт', "Энди Уэт", "Марк Утони", "Винката Капур"])
 if __name__ == '__main__':
     main()
