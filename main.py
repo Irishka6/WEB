@@ -1,8 +1,11 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, url_for
 from data import db_session
 from data.news import Jobs
 from data.users import User
+from data.department import Department
 from datetime import datetime
+
+from forms.loginform import LoginForm
 from forms.user import RegisterForm
 
 app = Flask(__name__)
@@ -12,8 +15,18 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 def main():
     db_session.global_init("db/blogs.db")
     db_sess = db_session.create_session()
+    for user in db_sess.query(Department).filter(Department.id == 1):
+        for i in user.members.split(', '):
+            t = 0
+            for use in db_sess.query(Jobs).all():
+                if str(i) in use.collaborators:
+                    t += use.work_size
+            if t >= 25:
+                u = db_sess.query(User).filter(User.id == int(i))
+                print(f'{u.surname} {u.name}')
     db_sess.commit()
     app.run()
+
 @app.route("/")
 def index():
     db_sess = db_session.create_session()
@@ -52,5 +65,11 @@ def reqister():
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        return redirect('/success')
+    return render_template('login.html', title='Авторизация', form=form)
 if __name__ == '__main__':
     main()
