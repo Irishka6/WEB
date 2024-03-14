@@ -33,6 +33,20 @@ def index():
     news = db_sess.query(Jobs).all()
     return render_template("index.html", news=news)
 
+@app.route("/table/<sex>/<age>")
+def coloree(sex, age):
+    if sex == 'male':
+        if int(age) >= 21:
+            return render_template("colore.html", im='https://papik.pro/uploads/posts/2023-03/1678454094_papik-pro-p-milii-prishelets-risunok-30.jpg', colore='#008cf0')
+        else:
+            return render_template("colore.html", im='https://papik.pro/uploads/posts/2021-11/1636522927_7-papik-pro-p-milii-inoplanetyanin-risunok-7.jpg', colore='#8aceff')
+    else:
+        if int(age) >= 21:
+            return render_template("colore.html", im='https://papik.pro/uploads/posts/2023-03/1678454094_papik-pro-p-milii-prishelets-risunok-30.jpg', colore='#ff0000')
+        else:
+            return render_template("colore.html", im='https://papik.pro/uploads/posts/2021-11/1636522927_7-papik-pro-p-milii-inoplanetyanin-risunok-7.jpg', colore='#ffa799')
+
+
 
 
 
