@@ -1,0 +1,43 @@
+<!doctype html>
+                        <html lang="en">
+                          <head>
+                            <meta charset="utf-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                            <link rel="stylesheet"
+                            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+                            integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+                            crossorigin="anonymous">
+                            <link rel="stylesheet" type="text/css" href="static/css/style.css" />
+                            <title>Пример формы</title>
+                          </head>
+                          <body>
+                          <center>
+                          <h1>Загрузка фото</h1>
+                          <h2>
+                              для участия в миссии
+                          </h2>
+                          </center>
+                          <form class="login_form" method="post">
+                              <h3>Приложите фото</h3>
+                            <div class="form-group">
+                                <input id="src" type="file"/>
+                                <img id="target" width="400" height="400"/>
+                            </div>
+                                <button type="submit" class="btn btn-primary">Отправить</button>
+                          </form>
+                          </body>
+                        </html>
+<script>function showImage(src,target) {
+  var fr=new FileReader();
+  // when image is loaded, set the src of the image where you want to display it
+  fr.onload = function(e) { target.src = this.result; };
+  src.addEventListener("change",function() {
+    // fill fr with image data
+    fr.readAsDataURL(src.files[0]);
+  });
+}
+
+var src = document.getElementById("src");
+var target = document.getElementById("target");
+showImage(src,target);
+</script>

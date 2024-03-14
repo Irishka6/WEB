@@ -1,10 +1,11 @@
-from flask import Flask, render_template, redirect, url_for
+import os
+
+from flask import Flask, render_template, redirect, url_for, request
 from data import db_session
 from data.news import Jobs
 from data.users import User
 from data.department import Department
 from datetime import datetime
-
 from forms.loginform import LoginForm
 from forms.user import RegisterForm
 
@@ -89,5 +90,14 @@ def login():
 @app.route('/distribution')
 def distribution():
     return render_template('cauta.html', user_list=['Ридли Скотт', "Энди Уэт", "Марк Утони", "Винката Капур"])
+
+@app.route('/form_sample', methods=['POST', 'GET'])
+def form_sample():
+    if request.method == 'GET':
+        return render_template('form.html', t='')
+    if request.method == 'POST':
+        f = request.files['file']
+        return render_template('form.html', t=f)
+
 if __name__ == '__main__':
     main()
