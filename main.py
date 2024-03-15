@@ -89,7 +89,7 @@ def login():
 
 @app.route('/distribution')
 def distribution():
-    return render_template('cauta.html', user_list=['Ридли Скотт', "Энди Уэт", "Марк Утони", "Винката Капур"])
+    return render_template('cauta.html', user_list=['Ридли Скотт', "Энди Уэт", "Марк Утони", "Винката Капур", "utgyuhiujiok"])
 
 @app.route('/form_sample', methods=['POST', 'GET'])
 def form_sample():
@@ -98,6 +98,10 @@ def form_sample():
     if request.method == 'POST':
         f = request.files['file']
         return render_template('form.html', t=f)
+
+@app.route('/static')
+def statice():
+    return render_template('carusel.html')
 
 if __name__ == '__main__':
     main()
