@@ -1,54 +1,41 @@
 import os
+import string
+from random import choice
 
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, session
 from data import db_session
 from data.news import Jobs
 from data.users import User
 from data.department import Department
 from datetime import datetime
 from forms.loginform import LoginForm
+from flask_login import LoginManager, login_user
 from forms.user import RegisterForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+login_manager = LoginManager()
+login_manager.init_app(app)
+app.secret_key = ''.join(choice(string.ascii_letters) for _ in range(30))
+
 
 
 def main():
     db_session.global_init("db/blogs.db")
     db_sess = db_session.create_session()
-    for user in db_sess.query(Department).filter(Department.id == 1):
-        for i in user.members.split(', '):
-            t = 0
-            for use in db_sess.query(Jobs).all():
-                if str(i) in use.collaborators:
-                    t += use.work_size
-            if t >= 25:
-                u = db_sess.query(User).filter(User.id == int(i))
-                print(f'{u.surname} {u.name}')
     db_sess.commit()
     app.run()
 
 @app.route("/")
-def index():
-    db_sess = db_session.create_session()
-    news = db_sess.query(Jobs).all()
-    return render_template("index.html", news=news)
-
-@app.route("/table/<sex>/<age>")
-def coloree(sex, age):
-    if sex == 'male':
-        if int(age) >= 21:
-            return render_template("colore.html", im='https://papik.pro/uploads/posts/2023-03/1678454094_papik-pro-p-milii-prishelets-risunok-30.jpg', colore='#008cf0')
-        else:
-            return render_template("colore.html", im='https://papik.pro/uploads/posts/2021-11/1636522927_7-papik-pro-p-milii-inoplanetyanin-risunok-7.jpg', colore='#8aceff')
-    else:
-        if int(age) >= 21:
-            return render_template("colore.html", im='https://papik.pro/uploads/posts/2023-03/1678454094_papik-pro-p-milii-prishelets-risunok-30.jpg', colore='#ff0000')
-        else:
-            return render_template("colore.html", im='https://papik.pro/uploads/posts/2021-11/1636522927_7-papik-pro-p-milii-inoplanetyanin-risunok-7.jpg', colore='#ffa799')
-
-
-
+def index1():
+    try:
+        db_sess = db_session.create_session()
+        news = db_sess.query(Jobs).all()
+        return render_template("index.html", news=news, name=session["guest"])
+    except KeyError:
+        db_sess = db_session.create_session()
+        news = db_sess.query(Jobs).all()
+        return render_template("index.html", news=news, name='')
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -84,24 +71,22 @@ def reqister():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        return redirect('/success')
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == form.email.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            session['guest'] = user.name
+            return redirect("/")
+        return render_template('login.html',
+                               message="Неправильный логин или пароль",
+                               form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
-@app.route('/distribution')
-def distribution():
-    return render_template('cauta.html', user_list=['Ридли Скотт', "Энди Уэт", "Марк Утони", "Винката Капур", "utgyuhiujiok"])
+@login_manager.user_loader
+def load_user(user_id):
+    db_sess = db_session.create_session()
+    return db_sess.query(User).get(user_id)
 
-@app.route('/form_sample', methods=['POST', 'GET'])
-def form_sample():
-    if request.method == 'GET':
-        return render_template('form.html', t='')
-    if request.method == 'POST':
-        f = request.files['file']
-        return render_template('form.html', t=f)
-
-@app.route('/static')
-def statice():
-    return render_template('carusel.html')
 
 if __name__ == '__main__':
     main()
