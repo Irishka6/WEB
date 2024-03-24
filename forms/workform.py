@@ -4,9 +4,9 @@ from wtforms.validators import DataRequired
 
 
 class WorkForm(FlaskForm):
-    team_leader = StringField('Тим-лид')
-    job = StringField('Название работы')
-    work_size = IntegerField('Длительность работы')
-    collaborators = StringField("Команда")
+    team_leader = IntegerField('Тим-лид', validators=[DataRequired()])
+    job = StringField('Название работы', validators=[DataRequired()])
+    work_size = IntegerField('Длительность работы', validators=[DataRequired()])
+    collaborators = StringField("Команда", validators=[DataRequired()])
     is_finished = BooleanField("Закончена", default=0)
     submit = SubmitField('Войти')

@@ -24,7 +24,7 @@
         </p>
         <p>
             {{ form.work_size.label }}<br>
-            {{ form.work_size(calss="form-control") }}<br>
+            {{ form.work_size(class="form-control") }}<br>
             {% for error in form.work_size.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
@@ -33,7 +33,7 @@
         </p>
         <p>
             {{ form.collaborators.label }}<br>
-            {{ form.collaborators(calss="form-control") }}<br>
+            {{ form.collaborators(class="form-control") }}<br>
             {% for error in form.collaborators.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
@@ -42,7 +42,7 @@
         </p>
         <p>
             {{ form.is_finished.label }}<br>
-            {{ form.is_finished(calss="form-control") }}<br>
+            {{ form.is_finished(class="form-control") }}<br>
             {% for error in form.is_finished.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}

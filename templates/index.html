@@ -2,14 +2,14 @@
 
 {% block content %}
 
-<div class="container" style="">
-    <form method="post">
-        <input type="submit" class="btn btn-warning" value="Добавить работу" >
-    </form>
-</div>
-<h1>Записи в блоге</h1>
+{% if current_user.is_authenticated %}
+    <a href="work" class="btn btn-secondary">Добавить новость</a>
+{% endif %}
+<center>
+<h1>Работа</h1>
+</center>
 {% for item in news%}
-<h2>Acshion # {{item.id}}</h2>
+<h2>Acshion # {{news.index(item)+ 1}}</h2>
 <table class="table">
   <thead>
     <tr class="table-secondary">
@@ -30,5 +30,15 @@
     </tr>
   </tbody>
 </table>
+{% if current_user.is_authenticated and current_user == item.user %}
+    <div>
+        <a href="/news/{{ item.id }}" class="btn btn-warning">
+            Изменить
+        </a>
+        <a href="/news_delete/{{ item.id }}" class="btn btn-danger">
+            Удалить
+        </a>
+    </div>
+{% endif %}
 {% endfor %}
 {% endblock %}
