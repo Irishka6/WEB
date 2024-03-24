@@ -9,6 +9,7 @@ from data.users import User
 from data.department import Department
 from datetime import datetime
 from forms.loginform import LoginForm
+from forms.workform import WorkForm
 from flask_login import LoginManager, login_user
 from forms.user import RegisterForm
 
@@ -26,15 +27,21 @@ def main():
     db_sess.commit()
     app.run()
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index1():
     try:
         db_sess = db_session.create_session()
         news = db_sess.query(Jobs).all()
+        if request.method == 'POST':
+            button_name = request.form['button']
+            if button_name == 'wok':
+                return redirect("/work")
         return render_template("index.html", news=news, name=session["guest"])
     except KeyError:
         db_sess = db_session.create_session()
         news = db_sess.query(Jobs).all()
+        if request.method == 'POST':
+            return redirect("/work")
         return render_template("index.html", news=news, name='')
 
 
@@ -81,6 +88,25 @@ def login():
                                message="Неправильный логин или пароль",
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
+
+@app.route("/work", methods=['GET', 'POST'])
+def work():
+    form = WorkForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        print(form.team_leader.data, form.job.data, form.work_size.data, form.collaborators.data, datetime.now())
+        worke = Jobs(team_leader=form.team_leader.data,
+                     job=form.job.data,
+                     work_size=form.work_size.data,
+                     collaborators=str(form.collaborators.data),
+                     start_date=datetime.now(),
+                     end_date=datetime.now(),
+                     is_finished=form.is_finished.data)
+
+        db_sess.add(worke)
+        db_sess.commit()
+        return redirect("/")
+    return render_template('work.html', form=form)
 
 @login_manager.user_loader
 def load_user(user_id):

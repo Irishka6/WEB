@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="d-grid gap-2 d-md-block" style="width: 100px; height: 70px;">
-  <button type="button" class="btn btn-warning"  style="width: 200px; height: 50px; position: relative; top: 10px; left: 1px">Добавить работу</button>
+
+<div class="container" style="">
+    <form method="post">
+        <input type="submit" class="btn btn-warning" value="Добавить работу" >
+    </form>
 </div>
 <h1>Записи в блоге</h1>
 {% for item in news%}
